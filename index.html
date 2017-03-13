@@ -3,36 +3,51 @@
 
 <head>
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
 
     <!-- inject:css -->
     <!-- endinject -->
     <meta charset="utf-8">
     <title></title>
-    <!-- inject:css -->
-    <!-- endinject -->
 </head>
-<h1> Honey Do- List </h1>
+<div class="jumbotron" align="center">
+    <h1>List of Honey-Do's</h1>
+</div>
 <hr>
-<body ng-controller="homeController as homeCtrl">
-    <!-- bower:js -->
-    <!-- endbower -->
-    <label>Add Task</label><br>
-    <input type="text" class="col-md-6" ng-model="homeCtrl.NewTodo"></input>
+
+<body ng-controller="TodoController as todoCtrl">
+    <div class="form-group">
+        <label>Add Task</label><br>
+        <input type="text" class="form-control" ng-model="todoCtrl.newTodo.name"></input>
+    </div>
     <br><br>
-    <label>Priority</label><br>
-    <select ng-model="homeCtrl.selectedPriority" ng-options="priority for priority in homeCtrl.priorities"></select>
-    <button class="btn btn-primary" type="button" ng-click="homeCtrl.click()">Add Item</button>
+    <div class="form-group">
+        <label>Priority</label><br>
+        <!-- <value> as <text> for <current-item> in <collection>-->
+        <select ng-model="todoCtrl.newTodo.priority" class="form-control" ng-options="priority as priority.name for priority in todoCtrl.priorities"></select>
+        <button class="btn btn-primary" type="button" ng-click="todoCtrl.click()">Add Item</button>
+    </div>
+    <!-- <pre>{{todoCtrl.newTodo | json}}</pre>
+    <pre> {{todoCtrl.todos | json}}</pre> -->
     <hr>
-    <ul>
-        <li ng-repeat="item in homeCtrl.todos">{{item.name}}-{{item.priority}}</li>
+    <button class="btn btn-primary" type="button" ng-click="todoCtrl.sortField = 'name'">order by Name</button>
+    <button class="btn btn-primary" type="button" ng-click="todoCtrl.sortField = 'priority.number'">Low Priority</button>
+    <button class="btn btn-primary" type="button" ng-click="todoCtrl.sortField = '-priority.number'">Hi Priority</button>
+    <ul align="center" class="list-group">
+        <li ng-repeat="item in todoCtrl.todos |orderBy: todoCtrl.sortField" class={{item.priority.style}}>
+            {{item.name}}-{{item.priority.name}}
+        </li>
     </ul>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
-    <script src="index.js"></script>
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!-- endbower  -->
 
     <!-- inject:js -->
+    <script src="app/app.module.js"></script>
+    <script src="app/todo/todo.controller.js"></script>
     <!-- endinject -->
 </body>
 
