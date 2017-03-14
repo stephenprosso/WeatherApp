@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="WeatherApp">
 
 <head>
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- endbower -->
 
     <!-- inject:css -->
@@ -11,45 +11,65 @@
     <meta charset="utf-8">
     <title></title>
 </head>
-<div class="jumbotron" align="center">
-    <h1>List of Honey-Do's</h1>
-</div>
-<hr>
 
-<body ng-controller="TodoController as todoCtrl">
+<body ng-controller="WeatherController as weatherCtrl">
+    <div id="MainContainer">
+        <header class="page-header" align="center">
+            <h1>Weather Application</h1>
+        </header>
+        <div id="SearchBar">
+            <button class="btn btn-primary" type="button" ng-click="weatherCtrl.APIcall('SanDiego')">SD</button>
+            <button class="btn btn-primary" type="button" ng-click="weatherCtrl.APIcall('NewYork')">NY</button>
+            <button class="btn btn-primary" type="button" ng-click="weatherCtrl.APIcall('Tokyo')">Tokyo</button>
+            <button class="btn btn-primary" type="button" ng-click="weatherCtrl.APIcall('London')">London</button>
+            <label>Enter City name to see the Weather</label><br>
+            <input type="text" ng-model="weatherCtrl.citySearch">
+            </input>
+            <button type="button" ng-click="weatherCtrl.APIcall(weatherCtrl.citySearch)">Check Weather</button>
+        </div>
+        <div id="cityAndSearchContainer" class="row">
+            <div id="cityContainer" class="col-md-6">
 
-    <div id="container" class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-8">
-            <div class="form-group">
-                <label>Add Task</label><br>
-                <input type="text" class="form-control" ng-model="todoCtrl.newTodo.name"></input>
+                <div id="currentCity">
+                    <h3>Current City</h3> {{weatherCtrl.currentCity.name}}
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <label>Temperature</label>
+                        <p>{{weatherCtrl.currentCity.main.temp}}</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <label>pressure</label>
+                        <p>{{weatherCtrl.currentCity.main.pressure}}</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <label>Humidty</label>
+                        <p>{{weatherCtrl.currentCity.main.humidity}}</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <label>Low Temp</label>
+                        <p>{{weatherCtrl.currentCity.main.temp_min}}</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <label>Hi Temp</label>
+                        <p>{{weatherCtrl.currentCity.main.temp_max}}</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                      <label>Wind Speed</label>
+                      <p>{{weatherCtrl.currentCity.wind.speed}}</p>
+                    </div>
+                </div>
+
             </div>
-            <br><br>
-            <div class="form-group">
-                <label>Priority</label><br>
-                <!-- <value> as <text> for <current-item> in <collection>-->
-                <select ng-model="todoCtrl.newTodo.priority" class="form-control" ng-options="priority as priority.name for priority in todoCtrl.priorities"></select>
-                <button align="center" class="btn btn-primary form-control" type="button" ng-click="todoCtrl.click()">Add Item</button>
+            <div id="SearchContainer" class="col-md-6">
+                <ul><label>Search History</label>
+                    <li ng-repeat="item in weatherCtrl.searchHistory">
+                      {{item.city}} {{item.date}}
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-2">
-            </div>
-        </div>
-    </div>
-    <!-- <pre>{{todoCtrl.newTodo | json}}</pre>
-    <pre> {{todoCtrl.todos | json}}</pre> -->
-    <hr>
-    <div align="center">
-    <button class="btn btn-primary" type="button" ng-click="todoCtrl.sortField = 'name'">order by Name</button>
-    <button class="btn btn-primary" type="button" ng-click="todoCtrl.sortField = 'priority.number'">Low Priority</button>
-    <button class="btn btn-primary" type="button" ng-click="todoCtrl.sortField = '-priority.number'">Hi Priority</button>
-    <ul align="center" class="list-group">
-        <li ng-repeat="item in todoCtrl.todos |orderBy: todoCtrl.sortField" class={{item.priority.style}}>
-            {{item.name}}-{{item.priority.name}}
-        </li>
-    </ul>
-  </div>
+        </div> <!-- closes cityAndSearchContainer -->
+    </div> <!-- closes main container -->
     <!-- bower:js -->
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -58,7 +78,8 @@
 
     <!-- inject:js -->
     <script src="app/app.module.js"></script>
-    <script src="app/todo/todo.controller.js"></script>
+    <script src="app/weather/weather.controller.js"></script>
+    <script src="app/weather/weather.controller.js"></script>
     <!-- endinject -->
 </body>
 
